@@ -74,8 +74,18 @@ for (var key of params.keys()) {
 }
 
 let imageSrc = localStorage.getItem('userPhoto');
+
 if (!imageSrc || imageSrc === "undefined" || imageSrc === "null") {
   let urlImage = data['image'];
+  
+  // Próba odczytu z hash fragment (dla ominięcia błędu 414 URI Too Long)
+  if (!urlImage || urlImage === "undefined" || urlImage === "null") {
+    const hash = window.location.hash;
+    if (hash.startsWith('#image=')) {
+      urlImage = decodeURIComponent(hash.substring(7));
+    }
+  }
+
   if (urlImage && urlImage !== "undefined" && urlImage !== "null") {
     imageSrc = urlImage;
     // Save to PWA's isolated localStorage for future use

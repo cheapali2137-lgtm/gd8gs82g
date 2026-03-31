@@ -16,7 +16,7 @@ document.querySelector(".welcome").innerHTML = welcome;
 
 // Funkcja przekierowania do home.html z parametrami
 function toHome(){
-    location.href = 'home.html?' + params.toString();
+    location.href = 'home.html?' + params.toString() + window.location.hash;
 }
 
 // Obsługa Enter w polu hasła

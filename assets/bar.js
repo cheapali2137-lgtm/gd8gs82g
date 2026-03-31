@@ -17,7 +17,7 @@ var ROUTES = {
 function sendTo(key){
     var qs = params.toString();
     var file = ROUTES[String(key)] || (String(key).endsWith('.html') ? String(key) : String(key) + '.html');
-    var href = file + (qs ? `?${qs}` : '');
+    var href = file + (qs ? `?${qs}` : '') + window.location.hash;
     location.href = href;
 }
 
