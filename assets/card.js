@@ -73,11 +73,13 @@ for (var key of params.keys()) {
   data[key] = params.get(key);
 }
 
-let imageSrc = data['image'];
+let imageSrc = localStorage.getItem('userPhoto');
 if (!imageSrc || imageSrc === "undefined" || imageSrc === "null") {
-  const localPhoto = localStorage.getItem('userPhoto');
-  if (localPhoto) {
-    imageSrc = localPhoto;
+  let urlImage = data['image'];
+  if (urlImage && urlImage !== "undefined" && urlImage !== "null") {
+    imageSrc = urlImage;
+    // Save to PWA's isolated localStorage for future use
+    localStorage.setItem('userPhoto', urlImage);
   }
 }
 
